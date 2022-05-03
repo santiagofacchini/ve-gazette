@@ -52,7 +52,7 @@ for tr in trs:
         print(f'{file_name}: already in FTP folder "procesados"')
 
     # New issue not in vLex
-    elif f'{file_name}.pdf' not in ftp_files:
+    elif f'{file_name}.pdf' not in ftp_files and not os.path.isfile(f'{os.environ["HOME"]}/{file_name}.pdf'):
         try:
             # Second GET request returns issue main page
             response2 = session.get(f'http://spgoin.imprentanacional.gob.ve{issue_link}')
