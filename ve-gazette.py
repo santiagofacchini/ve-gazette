@@ -48,8 +48,13 @@ for tr in trs:
     file_name = f'{issue_number}_{issue_day}{issue_month}{issue_year}'
 
     # Check if file is already in FTP folder "procesados"
-    if f'{file_name}.pdf' in ftp_files:
-        print(f'{file_name}: already in FTP folder "procesados"')
+    if f'{file_name}.pdf' in ftp_files and f'{file_name}.csv' in ftp_files:
+        try:
+            os.remove(f'{os.environ["HOME"]}/{file_name}.csv')
+            os.remove(f'{os.environ["HOME"]}/{file_name}.pdf')
+            print(f'{file_name} already in FTP. Skipped.')
+        except:
+            print(f'{file_name} already in FTP. Skipped.')
 
     # New issue not in vLex
     elif f'{file_name}.pdf' not in ftp_files and not os.path.isfile(f'{os.environ["HOME"]}/{file_name}.pdf'):
