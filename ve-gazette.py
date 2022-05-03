@@ -84,7 +84,7 @@ for tr in trs:
 
             # Create CSV file
             with open(f'{download_directory}/{file_name}.csv', 'w') as csv_file:
-                csv_file.write(f'Gaceta Oficial de la República Bolivariana de Venezuela Nº {issue_number} del {issue_day}/{issue_month}/{issue_year}. Versión {issue_edition} (contenido completo)||{issue_edition}|{issue_day}/{issue_month}/{issue_year}|1|{total_pages}')
+                csv_file.write(f'Gaceta Oficial de la República Bolivariana de Venezuela Nº {issue_number} del {issue_day}/{issue_month}/{issue_year}. Versión {issue_edition} (contenido completo)||Contenido completo|{issue_day}/{issue_month}/{issue_year}|1|{total_pages}')
 
         # Error
         except:
