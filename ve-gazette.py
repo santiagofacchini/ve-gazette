@@ -88,7 +88,7 @@ for tr in trs:
 
         # Error
         except:
-            print(f'{file_name}: an error occurred. Please visit http://spgoin.imprentanacional.gob.ve/{pdf_viewer_url}')
+            print(f'{file_name}: an error occurred. Please visit http://spgoin.imprentanacional.gob.ve')
 
 # Close requests session
 session.close()
