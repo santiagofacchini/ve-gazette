@@ -4,14 +4,10 @@ import ftplib
 import requests
 import bs4
 import PyPDF2
-from dotenv import load_dotenv
 
-
-# Load environment variables from .env file (must be in ~)
-load_dotenv(f'{os.environ["HOME"]}/.env')
 
 start_url = 'http://spgoin.imprentanacional.gob.ve/cgi-win/be_alex.cgi?forma=FGENERAL&nombrebd=spgoin&c01=Titulo&m01=frase&t01=&c03=Descriptor_TGO1&m03=comienzo&c04=FechaInicio&m04=%3E%3D&t04=01-01-2021&c05=FechaInicio&t05=&c06=Descriptor_EDR1&m06=frase&t06=Publicado&TSalida=T%3AGeneralGCTOF&recuperar=3000&MostrarHijos=E&Cizq=2&xsl=&pxsl=&TipoDoc=GCTOF&Submit2=Buscar&Orden=;FID;'
-download_directory = os.environ['HOME']
+download_directory = '/usr/src/app/downloads/'
 
 # Create list of files in FTP folder "procesados"
 ftp_connection = ftplib.FTP(
@@ -50,14 +46,14 @@ for tr in trs:
     # Check if file is already in FTP folder "procesados"
     if f'{file_name}.pdf' in ftp_files and f'{file_name}.csv' in ftp_files:
         try:
-            os.remove(f'{os.environ["HOME"]}/{file_name}.csv')
-            os.remove(f'{os.environ["HOME"]}/{file_name}.pdf')
+            os.remove(f'{download_directory}{file_name}.csv')
+            os.remove(f'{download_directory}{file_name}.pdf')
             print(f'{file_name} already in FTP. Skipped.')
         except:
             print(f'{file_name} already in FTP. Skipped.')
 
     # New issue not in vLex
-    elif f'{file_name}.pdf' not in ftp_files and not os.path.isfile(f'{os.environ["HOME"]}/{file_name}.pdf'):
+    elif f'{file_name}.pdf' not in ftp_files and not os.path.isfile(f'{download_directory}/{file_name}.pdf'):
         try:
             # Second GET request returns issue main page
             response2 = session.get(f'http://spgoin.imprentanacional.gob.ve{issue_link}')
@@ -74,16 +70,16 @@ for tr in trs:
             pdf_viewer = session.get(f'http://spgoin.imprentanacional.gob.ve{pdf_viewer_url}')
 
             # Write bytes response to PDF file
-            with open(f'{download_directory}/{file_name}.pdf', 'wb') as pdf_file:
+            with open(f'{download_directory}{file_name}.pdf', 'wb') as pdf_file:
                 pdf_file.write(pdf_viewer.content)
             print(f'{file_name}: downloaded PDF file')
 
             # Count PDF pages
-            read_pdf = PyPDF2.PdfFileReader(f'{download_directory}/{file_name}.pdf')
+            read_pdf = PyPDF2.PdfFileReader(f'{download_directory}{file_name}.pdf')
             total_pages = read_pdf.numPages
 
             # Create CSV file
-            with open(f'{download_directory}/{file_name}.csv', 'w') as csv_file:
+            with open(f'{download_directory}{file_name}.csv', 'w') as csv_file:
                 csv_file.write(f'Gaceta Oficial de la República Bolivariana de Venezuela Nº {issue_number} del {issue_day}/{issue_month}/{issue_year}. Versión {issue_edition} (contenido completo)||Contenido completo|{issue_day}/{issue_month}/{issue_year}|1|{total_pages}')
 
         # Error
