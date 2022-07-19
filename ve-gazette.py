@@ -37,7 +37,7 @@ for tr in trs:
 
     # Issue metadata is inside <td> tags
     tds = tr.find_all('td')
-    issue_number = tds[0].text.strip().replace('.', '')
+    issue_number = re.sub('[,.]', '', tds[0].text.strip())
     issue_edition = tds[1].text.strip()
     issue_day, issue_month, issue_year = tds[2].text.strip().split('-')
     issue_link = tds[0].a['href']
